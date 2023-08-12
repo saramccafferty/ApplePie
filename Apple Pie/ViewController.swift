@@ -17,14 +17,15 @@ class ViewController: UIViewController {
     var listOfWords = ["swift", "taylor", "cake", "lover", "cow", "tiger", "lion", "giraffe", "bird", "princess", "dress", "umbrella", "pasta"]
     let incorrectMovesAllowed = 7
     
+    // Track total wins and losses
     var totalWins = 0 {
         didSet {
-            newRound()
+            newRound() // Start a new round when wins change
         }
     }
     var totalLosses = 0 {
         didSet {
-            newRound()
+            newRound() // Start a new round when losses change
         }
     }
     
@@ -36,33 +37,36 @@ class ViewController: UIViewController {
             updateGameState()
         }
         
+    // Update game state based on current game properties
     func updateGameState() {
         if currentGame.incorrectMovesRemaining == 0 {
-            totalLosses += 1
+            totalLosses += 1 // Increment losses and start new round
             } else if currentGame.word == currentGame.formattedWord {
-                totalWins += 1
+                totalWins += 1 // Increment wins and start new round
             } else {
-            updateUI()
+            updateUI() // Update UI elements
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        newRound()
+        newRound() // Start a new game round when view loads
     }
     
-    var currentGame: Game!
+    var currentGame: Game! // The current game instance
     
+    // Start a new game round
     func newRound() {
         if !listOfWords.isEmpty {
         let newWord = listOfWords.removeFirst()
         currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters: [])
-        enableLetterButtons(true)
-        updateUI()
+        enableLetterButtons(true) // Enable letter buttons for input
+        updateUI() // Update UI elements
         } else {
-            enableLetterButtons(false)
+            enableLetterButtons(false) // Disable letter buttons when no words left
         }
         
+        // Enable or disable letter buttons
         func enableLetterButtons(_ enable: Bool){
             for button in letterButtons {
                 button.isEnabled = enable
@@ -70,6 +74,7 @@ class ViewController: UIViewController {
         }
     }
     
+    // Update UI elements based on game state
     func updateUI() {
         var letters = [String]()
         for letter in currentGame.formattedWord {
